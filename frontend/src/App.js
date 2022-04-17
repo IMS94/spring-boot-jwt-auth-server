@@ -1,40 +1,46 @@
 import './App.css';
 import {Container, createTheme, ThemeProvider} from "@mui/material";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import LoginView from "./views/Login";
 import Home from "./views/Home";
-import {AuthProvider} from "./auth";
+import {useAuth} from "./auth";
+import {useEffect} from "react";
 
 const theme = createTheme({});
 
 function App() {
+  const navigate = useNavigate();
+  const {isAuthenticated} = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Container
-            sx={{
-              height: "100vh",
-              backgroundColor: (theme) => theme.palette.grey[500]
-            }}
-            maxWidth={false}
-            disableGutters
-          >
-            <Routes>
-              <Route index element={<Home/>}/>
-              <Route path="/login" element={<LoginView/>}/>
-              <Route
-                path="*"
-                element={
-                  <div>
-                    Not Found!
-                  </div>
-                }
-              />
-            </Routes>
-          </Container>
-        </AuthProvider>
-      </BrowserRouter>
+      <Container
+        sx={{
+          height: "100vh",
+          backgroundColor: (theme) => theme.palette.grey[500]
+        }}
+        maxWidth={false}
+        disableGutters
+      >
+        <Routes>
+          <Route index element={<Home/>}/>
+          <Route path="/login" element={<LoginView/>}/>
+          <Route
+            path="*"
+            element={
+              <div>
+                Not Found!
+              </div>
+            }
+          />
+        </Routes>
+      </Container>
     </ThemeProvider>
   );
 }

@@ -3,6 +3,7 @@ package com.example.springboot.jwt.controller;
 import com.example.springboot.jwt.entity.Product;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins = {"${app.security.cors.origin}"})
 @RestController
 @RequestMapping("/products")
 public class ProductController {

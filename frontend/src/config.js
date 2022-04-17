@@ -5,3 +5,5 @@ export const authConfig = {
   scope: "openid email profile",
   redirectUrl: "http://localhost:3000/login"
 }
+
+export const apiBaseUrl = "http://localhost:8080"

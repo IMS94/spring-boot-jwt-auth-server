@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {authConfig} from "../config";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ export class TokenResponse {
 const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
-  const [idToken, setIdToken] = useState();
+  const {idToken, setIdToken} = useIdToken();
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [tokenFetching, setTokenFetching] = useState(false);
   const [tokenError, setTokenError]: [string | undefined, any] = useState();
@@ -61,6 +61,12 @@ export const AuthProvider = ({children}) => {
     setAuthenticated(false);
   }
 
+  useEffect(() => {
+    if (idToken) {
+      setAuthenticated(true);
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -89,3 +95,17 @@ class AuthContextType {
 }
 
 export const useAuth = (): AuthContextType => useContext(AuthContext);
+
+export const useIdToken = () => {
+  const [idToken, setIdToken] = useState(localStorage.getItem("id_token"));
+
+  const saveIdToken = (token) => {
+    localStorage.setItem("id_token", token);
+    setIdToken(token);
+  }
+
+  return {
+    idToken,
+    setIdToken: saveIdToken
+  };
+};
