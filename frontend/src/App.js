@@ -1,24 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import {Container, createTheme, ThemeProvider} from "@mui/material";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import LoginView from "./views/Login";
+import LandingPage from "./views/LandingPage";
+
+const theme = createTheme({});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Container
+          sx={{
+            height: "100vh",
+            backgroundColor: (theme) => theme.palette.grey[500]
+          }}
+          maxWidth={false}
+          disableGutters
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Routes>
+            <Route index element={<LandingPage/>}/>
+            <Route path="/login" element={<LoginView/>}/>
+            <Route
+              path="*"
+              element={
+                <div>
+                  Not Found!
+                </div>
+              }
+            />
+          </Routes>
+        </Container>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
