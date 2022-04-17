@@ -1,6 +1,6 @@
 import Main from "../../layout/Main";
 
-const LandingPage = () => {
+const Home = () => {
 
   return (
     <Main>
@@ -9,4 +9,4 @@ const LandingPage = () => {
   )
 };
 
-export default LandingPage;
+export default Home;
