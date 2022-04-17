@@ -22,15 +22,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests(configurer ->
                         configurer
-                                .antMatchers(
-                                        "/error",
-                                        "/login"
-                                )
+                                .antMatchers("/error")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
-                // JWT Validation Configuration
+                // Enable JWT Authentication
                 .oauth2ResourceServer().jwt();
     }
 }
