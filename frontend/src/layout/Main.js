@@ -7,7 +7,13 @@ const Main = ({children}) => {
   const {signOut, isAuthenticated} = useAuth();
 
   return (
-    <Container maxWidth={false} disableGutters>
+    <Container
+      sx={{
+        height: "100%"
+      }}
+      maxWidth={false}
+      disableGutters
+    >
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>

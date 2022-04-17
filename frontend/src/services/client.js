@@ -22,7 +22,7 @@ client.interceptors.response.use(
   },
   (err) => {
     if (err.response?.status === 401) {
-      const idToken = localStorage.removeItem("id_token");
+      localStorage.removeItem("id_token");
       window.location.reload();
     }
     return Promise.reject(err);
