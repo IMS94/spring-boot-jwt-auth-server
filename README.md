@@ -4,7 +4,7 @@ _**keywords**_: Spring Boot, REST API, JWT, Authentication, Authorization Server
 
 ## Overview
 
-This is a demo to show how we can use the Spring Boot's OAuthResourceServer's `jwt` authentication to protect a REST API 
+This is a demo to show how we can use the Spring Boot's OAuthResourceServer's `jwt` authentication to protect a REST API
 using OpenID/OAuth2 tokens (ID Tokens/JWT) obtained from an external authorization server.
 * `frontend` directory contains the example frontend
 
@@ -79,14 +79,15 @@ sequenceDiagram
     
     SPA ->> Filter: GET https://api.com/products
     Note right of SPA: Include authorization header<br/>Authorization: Bearer ${id_token}
-
-    %%rect rgb(191, 223, 255)
+    
     Filter ->> Filter: validate JWT in "Authorization" header
     
     activate Auth
+    rect rgb(191, 223, 255)
     Filter ->> Auth: get JWKS from authorization server<br/>https://auth-server.com/jwks
-    Note over Filter: Obtaining JWKS is a one time task<br/>and will be cached for future usage
+    Note over Filter,Auth: Obtaining JWKS is a one time task<br/>and will be cached for future usage
     Auth ->> Filter: JWKS (Json Web Key Set)
+    end
     deactivate Auth
     
     alt JWT valid
@@ -103,7 +104,6 @@ sequenceDiagram
     
     deactivate Filter
     
-    %%end
     deactivate User
     deactivate SPA
 
