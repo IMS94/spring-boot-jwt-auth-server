@@ -66,23 +66,45 @@ sequenceDiagram
     
     actor User
     participant SPA as Single Page Application<br/>(Browser)
-    participant API as Backend REST API
-    participant Auth as Authorization Server
+    participant Filter as OAuth2 Resource Server<br>(Backend)
+    participant API as Product REST API<br>(Backend)
+    participant Auth as Authorization Server<br>(External)
     
     activate User
     activate SPA
     
-    User ->> SPA: list products
-    SPA ->> API: GET https://api.com/products
+    User -->> SPA: list products
+    
+    activate Filter
+    
+    SPA ->> Filter: GET https://api.com/products
     Note right of SPA: Include authorization header<br/>Authorization: Bearer ${id_token}
 
-    rect rgb(191, 223, 255)
-    API ->> API: validate JWT in "Authorization" header
-    API ->> Auth: get JWKS from authorization server<br/>https://auth-server.com/jwks
-    Note over API, Auth: Obtaining JWKS is a one time task<br/>and will be cached for future usage
-    Auth ->> API: JWKS (Json Web Key Set)
+    %%rect rgb(191, 223, 255)
+    Filter ->> Filter: validate JWT in "Authorization" header
     
-    API ->> API: Validate
+    activate Auth
+    Filter ->> Auth: get JWKS from authorization server<br/>https://auth-server.com/jwks
+    Note over Filter: Obtaining JWKS is a one time task<br/>and will be cached for future usage
+    Auth ->> Filter: JWKS (Json Web Key Set)
+    deactivate Auth
+    
+    alt JWT valid
+        activate API
+        Filter ->> API: Forward to /products service
+        API ->> API: Fetch products from DB
+        API ->> SPA: products list
+        deactivate API
+        SPA -->> User: show product list
+    else JWT not valid
+        Filter ->> SPA: Unauthorized
+        SPA -->> User: show not permitted error
     end
+    
+    deactivate Filter
+    
+    %%end
+    deactivate User
+    deactivate SPA
 
 ```
