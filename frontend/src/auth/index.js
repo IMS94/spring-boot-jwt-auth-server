@@ -11,7 +11,7 @@ export class TokenResponse {
 const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
-  const {idToken, setIdToken} = useIdToken();
+  const {accessToken, setAccessToken} = useAccessToken();
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [tokenFetching, setTokenFetching] = useState(false);
   const [tokenError, setTokenError]: [string | undefined, any] = useState();
@@ -45,7 +45,7 @@ export const AuthProvider = ({children}) => {
       );
       console.log(response.data);
       let tokenResponse: TokenResponse = response.data;
-      setIdToken(tokenResponse.id_token);
+      setAccessToken(tokenResponse.access_token);
       // TODO Validate Token
       setAuthenticated(true);
     } catch (e) {
@@ -57,12 +57,12 @@ export const AuthProvider = ({children}) => {
   };
 
   const signOut = () => {
-    setIdToken(null);
+    setAccessToken(null);
     setAuthenticated(false);
   }
 
   useEffect(() => {
-    if (idToken) {
+    if (accessToken) {
       setAuthenticated(true);
     }
   }, []);
@@ -70,7 +70,7 @@ export const AuthProvider = ({children}) => {
   return (
     <AuthContext.Provider
       value={{
-        idToken,
+        idToken: accessToken,
         isAuthenticated,
         progress: tokenFetching,
         signInError: tokenError,
@@ -85,7 +85,7 @@ export const AuthProvider = ({children}) => {
 };
 
 class AuthContextType {
-  idToken: string;
+  accessToken: string;
   isAuthenticated: boolean;
   progress: boolean;
   signInError: string | null;
@@ -96,16 +96,16 @@ class AuthContextType {
 
 export const useAuth = (): AuthContextType => useContext(AuthContext);
 
-export const useIdToken = () => {
-  const [idToken, setIdToken] = useState(localStorage.getItem("id_token"));
+export const useAccessToken = () => {
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("access_token"));
 
-  const saveIdToken = (token) => {
-    localStorage.setItem("id_token", token);
-    setIdToken(token);
+  const saveAccessToken = (token) => {
+    localStorage.setItem("access_token", token);
+    setAccessToken(token);
   }
 
   return {
-    idToken,
-    setIdToken: saveIdToken
+    accessToken: accessToken,
+    setAccessToken: saveAccessToken
   };
 };

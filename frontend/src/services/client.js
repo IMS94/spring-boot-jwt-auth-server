@@ -4,7 +4,7 @@ import {apiBaseUrl} from "../config";
 const client = axios.create({baseURL: apiBaseUrl});
 
 client.interceptors.request.use((config) => {
-  const idToken = localStorage.getItem("id_token");
+  const idToken = localStorage.getItem("access_token");
   if (idToken) {
     config.headers.Authorization = `Bearer ${idToken}`;
   }
@@ -22,7 +22,7 @@ client.interceptors.response.use(
   },
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem("id_token");
+      localStorage.removeItem("access_token");
       window.location.reload();
     }
     return Promise.reject(err);

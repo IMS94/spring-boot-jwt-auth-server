@@ -5,24 +5,29 @@ _**keywords**_: Spring Boot, REST API, JWT, Authentication, Authorization Server
 ## Overview
 
 This is a demo to show how we can use the Spring Boot's OAuthResourceServer's `jwt` authentication to protect a REST API
-using OpenID/OAuth2 tokens (ID Tokens/JWT) obtained from an external authorization server.
+using OIDC/OAuth2 tokens (Access Tokens/JWT) obtained from an external authorization server.
 * `frontend` directory contains the example frontend
 
 ## Getting Started
 
+### Backend
 1. Run the following command to build the backend
 ```bash
 ./mvnw clean install -DskipTests
 ```
 2. Start the `JwtAuthIdentityProviderApplication` main class to start the REST API. It will start at http://localhost:8080
-3. Run the following command to build and start the frontend (within the `frontend` directory):
+
+### Frontend (React.js Example)
+1. Run the following command to build and start the frontend (within the `frontend` directory):
 ```bash
 npm install
 npm start
 ```
 The frontend React.js app will start at http://localhost:3000
 
-## Authorization Code Flow
+## Solution Overview
+
+### Authorization Code Flow
 
 ```mermaid
 sequenceDiagram
@@ -47,7 +52,7 @@ sequenceDiagram
     
     SPA ->> Auth: get access token<br/>https://auth-server.com/token
     Note right of SPA: /token request includes the "auth code" received
-    Auth ->> SPA: id_token (optionally an access_token)
+    Auth ->> SPA: id_token and access_token
     
     deactivate Auth
     SPA ->> SPA: validate id_token
@@ -58,7 +63,7 @@ sequenceDiagram
     deactivate User
 ```
 
-## Invoking the backend REST API
+### Invoking the backend REST API
 
 ```mermaid
 sequenceDiagram
@@ -78,7 +83,7 @@ sequenceDiagram
     activate Filter
     
     SPA ->> Filter: GET https://api.com/products
-    Note right of SPA: Include authorization header<br/>Authorization: Bearer ${id_token}
+    Note right of SPA: Include authorization header<br/>Authorization: Bearer ${access_token}
     
     Filter ->> Filter: validate JWT in "Authorization" header
     
