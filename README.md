@@ -4,6 +4,8 @@ _**keywords**_: Spring Boot, REST API, JWT, Authentication, Authorization Server
 
 ## Overview
 
+**NOTE:** See the original article at [**JWT Authentication with OAuth2 Resource Server and an external Authorization Server**](https://medium.com/geekculture/jwt-authentication-with-oauth2-resource-server-and-an-external-authorization-server-2b8fd1524fc8)
+
 This is a demo to show how we can use the Spring Boot's OAuthResourceServer's `jwt` authentication to protect a REST API
 using OIDC/OAuth2 tokens (Access Tokens/JWT) obtained from an external authorization server.
 * `frontend` directory contains the example frontend
