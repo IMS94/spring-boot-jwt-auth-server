@@ -21,9 +21,9 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests(configurer ->
+                .authorizeHttpRequests(configurer ->
                         configurer
-                                .antMatchers("/error")
+                                .requestMatchers("/error")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
